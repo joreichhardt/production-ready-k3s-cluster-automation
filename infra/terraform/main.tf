@@ -18,7 +18,7 @@ resource "google_compute_firewall" "allow_internal" {
     protocol = "tcp"
   }
 
-  allows {
+  allow {
     protocol = "udp"
   }
 
