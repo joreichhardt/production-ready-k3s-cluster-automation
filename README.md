@@ -72,19 +72,23 @@ The cluster is designed as a 3-node k3s server cluster with embedded etcd for hi
 
 ```text
 .
-├── packer/
-│   ├── debian13-gcp.pkr.hcl
-│   └── ansible/
-│       └── site.yml
-├── terraform/
-│   ├── modules/
-│   ├── environments/
-│   └── main.tf
-├── scripts/
-│   ├── bootstrap-k3s.sh
-│   └── fetch-kubeconfig.sh
-├── docs/
-│   ├── architecture.md
-│   ├── roadmap.md
-│   └── decisions/
+├── ci
+├── infra
+│   └── terraform
+│       ├── main.tf
+│       ├── modules
+│       │   ├── network
+│       │   └── vm
+│       ├── outputs.tf
+│       ├── providers.tf
+│       ├── terraform.tfvars
+│       └── variables.tf
+├── k3s
+├── monitoring
+├── packer-gcp-debian
+│   ├── ansible
+│   │   ├── golden-image.yml
+│   │   └── prepare-k3s.yml
+│   └── debian13-gcp.pkr.hcl
 └── README.md
+
