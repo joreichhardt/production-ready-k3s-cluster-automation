@@ -133,8 +133,3 @@ This project focuses on real-world DevOps practices:
 - CI/CD automation
 - Secure cloud authentication
 
----
-
-## 📄 License
-
-MIT License
