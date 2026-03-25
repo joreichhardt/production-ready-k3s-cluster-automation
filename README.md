@@ -1,6 +1,16 @@
 
 # 🚧 Work in Progress — actively building a production-style k3s platform with Packer, Terraform and automation.
 
+## What already works
+creation of a base hardened debian13 image on gcp
+
+CI/CD Pipeline with Github, GCP, Terraform
+ - creating a vpc for the k3s cluster
+
+---
+Still a lot of work
+---
+
 ## production-ready-k3s-cluster-automation
 
 End-to-end automation for building and deploying a production-style k3s cluster.
