@@ -1,0 +1,72 @@
+---
+- name: Configure Debian 13 golden image
+  hosts: all
+  become: true
+
+  vars:
+    jre_public_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKqBKS2yFOrBAVBi+gKoKaf3wi4kqhBHs7e7/FVGWMnr"
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Upgrade installed packages
+      apt:
+        upgrade: dist
+
+    - name: Install base packages
+      apt:
+        name:
+          - curl
+          - wget
+          - vim
+          - git
+          - htop
+          - ca-certificates
+          - unzip
+          - bash-completion
+          - sudo
+        state: present
+
+    - name: Create user jre
+      user:
+        name: jre
+        shell: /bin/bash
+        groups: sudo
+        append: true
+        create_home: true
+
+    - name: Add authorized key for jre
+      authorized_key:
+        user: jre
+        key: "{{ jre_public_key }}"
+
+    - name: Disable password authentication
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "^#?PasswordAuthentication"
+        line: "PasswordAuthentication no"
+      notify: Restart SSH
+
+    - name: Disable root SSH login
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "^#?PermitRootLogin"
+        line: "PermitRootLogin no"
+      notify: Restart SSH
+
+    - name: Clean apt cache
+      apt:
+        autoclean: true
+
+    - name: Remove unnecessary dependencies
+      apt:
+        autoremove: true
+
+  handlers:
+    - name: Restart SSH
+      service:
+        name: ssh
+        state: restarted
