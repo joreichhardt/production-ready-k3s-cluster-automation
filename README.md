@@ -27,6 +27,7 @@ The cluster is designed as a 3-node k3s server cluster with embedded etcd for hi
 - Debian 13 base image
 - Preinstalled base packages
 - `jre` user with SSH key
+  - The image includes a predefined non-root user with SSH key access to ensure cloud-agnostic usability and compatibility with environments without managed SSH access (e.g., bare metal, Proxmox, OpenStack).
 - OS baseline configuration
 - Prepared for Kubernetes node usage
 
