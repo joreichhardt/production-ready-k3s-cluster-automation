@@ -1,3 +1,6 @@
+
+🚧 Work in Progress — actively building a production-style k3s platform with Packer, Terraform and automation.
+
 # production-ready-k3s-cluster-automation
 
 End-to-end automation for building and deploying a production-style k3s cluster.
