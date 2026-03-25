@@ -16,6 +16,8 @@ This project demonstrates a practical DevOps / Platform Engineering workflow:
 
 The goal is not just to install Kubernetes, but to show a reproducible, modular and automation-first infrastructure workflow.
 
+The cluster is designed as a 3-node k3s server cluster with embedded etcd for high availability. All nodes are built from the same hardened Debian golden image, while cluster bootstrapping and node joining are handled during deployment.
+
 ---
 
 ## Architecture
