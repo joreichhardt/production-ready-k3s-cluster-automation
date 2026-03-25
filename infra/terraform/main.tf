@@ -14,7 +14,7 @@ resource "google_compute_firewall" "allow_internal" {
   name    = "allow-internal"
   network = google_compute_network.vpc.name
 
-  allows {
+  allow {
     protocol = "tcp"
   }
 
