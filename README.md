@@ -1,106 +1,140 @@
+# Production-ready k3s Cluster Automation
 
-# 🚧 Work in Progress — actively building a production-style k3s platform with Packer, Terraform and automation.
-
-## What already works
-creation of a base hardened debian13 image on gcp
-
-CI/CD Pipeline with Github, GCP, Terraform
- - creating a vpc for the k3s cluster
-
----
-Still a lot of work
----
-
-## production-ready-k3s-cluster-automation
-
-End-to-end automation for building and deploying a production-style k3s cluster.
-
-For now GCP
-
-## Overview
-
-This project demonstrates a practical DevOps / Platform Engineering workflow:
-
-1. Build a reusable Debian golden image with **Packer**
-2. Provision networking and virtual machines with **Terraform**
-3. Bootstrap a **k3s** cluster on top of the provisioned nodes
-4. Add production-style platform components step by step
-
-The goal is not just to install Kubernetes, but to show a reproducible, modular and automation-first infrastructure workflow.
-
-The cluster is designed as a 3-node k3s server cluster with embedded etcd for high availability. All nodes are built from the same hardened Debian golden image, while cluster bootstrapping and node joining are handled during deployment.
+Automated Kubernetes (k3s) infrastructure provisioning on Google Cloud using Terraform and GitHub Actions with OIDC (keyless authentication).
 
 ---
 
-## Architecture
+## 🚀 Overview
 
-### Image Layer
-- **Packer**
-- Debian 13 base image
-- Preinstalled base packages
-- `jre` user with SSH key
-  - The image includes a predefined non-root user with SSH key access to ensure cloud-agnostic usability and compatibility with environments without managed SSH access (e.g., bare metal, Proxmox, OpenStack).
-- OS baseline configuration
-- Prepared for Kubernetes node usage
+This project demonstrates a production-oriented Infrastructure-as-Code setup:
 
-### Infrastructure Layer
-- **Terraform**
-- Virtual network / subnet
-- Security rules / firewall rules
-- Control plane node(s)
-- Worker node(s)
-- SSH access / metadata / instance configuration
+- Terraform for provisioning cloud infrastructure
+- GitHub Actions for CI/CD automation
+- OIDC (Workload Identity Federation) for secure, keyless authentication
+- Google Cloud as target platform
 
-### Cluster Layer
-- **k3s**
-- Automated bootstrap of the first server node
-- Join additional server/worker nodes
-- Kubeconfig retrieval
-- Optional add-ons
-
-### Platform Layer (planned)
-- Ingress
-- cert-manager
-- ExternalDNS
-- Monitoring stack
-- Logging
-- GitOps
-- Backup / restore
-- Node hardening
+The goal is to build a fully automated k3s cluster deployment pipeline.
 
 ---
 
-## Goals
+## ✨ Features
 
-- Reproducible infrastructure
-- Immutable image approach
-- Minimal manual steps
-- Clear separation of image build, provisioning and cluster bootstrap
-- Portfolio-ready DevOps / Platform Engineering project
+- Infrastructure provisioning with Terraform
+- Automated CI/CD with GitHub Actions
+- Secure authentication via OIDC (no static credentials)
+- Reproducible cloud infrastructure
+- Modular and extensible setup
 
 ---
 
-## Repository Structure
+## 🏗️ Architecture
 
-```text
-.
-├── ci
-├── infra
-│   └── terraform
-│       ├── main.tf
-│       ├── modules
-│       │   ├── network
-│       │   └── vm
-│       ├── outputs.tf
-│       ├── providers.tf
-│       ├── terraform.tfvars
-│       └── variables.tf
-├── k3s
-├── monitoring
-├── packer-gcp-debian
-│   ├── ansible
-│   │   ├── golden-image.yml
-│   │   └── prepare-k3s.yml
-│   └── debian13-gcp.pkr.hcl
-└── README.md
+Current state:
 
+- Custom VPC (`k3s-vpc`)
+- Subnet (`10.0.0.0/24`)
+- Internal firewall rules
+
+Planned:
+
+- Compute instances (k3s nodes)
+- Automated k3s installation
+- Cluster bootstrap via Ansible
+
+---
+
+## 🔁 CI/CD Pipeline
+
+GitHub Actions workflow:
+
+- Pull Requests → terraform plan
+- Push to master → terraform apply
+- Authentication via OIDC (Workload Identity Federation)
+
+No service account keys are used.
+
+---
+
+## 🔐 Authentication
+
+Authentication is implemented using:
+
+- GitHub OIDC tokens
+- Google Cloud Workload Identity Federation
+- Service Account impersonation
+
+This avoids long-lived credentials and follows modern cloud security best practices.
+
+---
+
+## 📁 Project Structure
+
+    infra/
+      terraform/          # Terraform configuration
+    .github/
+      workflows/          # GitHub Actions pipeline
+
+---
+
+## ⚙️ Terraform Setup
+
+### Variables
+
+    project_id = "your-project-id"
+    region     = "europe-west3"
+    zone       = "europe-west3-a"
+
+---
+
+### Local Usage
+
+    gcloud auth application-default login
+
+    cd infra/terraform
+    terraform init
+    terraform plan
+    terraform apply
+
+---
+
+## 🧪 CI/CD Usage
+
+Push changes to trigger the pipeline:
+
+    git push origin master
+
+Or trigger manually via GitHub Actions UI.
+
+---
+
+## 🔒 Security Notes
+
+- No key.json or static credentials
+- Authentication via short-lived OIDC tokens
+- Principle of least privilege recommended for Service Accounts
+
+---
+
+## 📈 Roadmap
+
+- [ ] Compute instances (k3s nodes)
+- [ ] Automated cluster provisioning
+- [ ] Multi-node setup
+- [ ] Remote Terraform state
+- [ ] Multi-environment support (dev / prod)
+
+---
+
+## 📌 Notes
+
+This project focuses on real-world DevOps practices:
+
+- Infrastructure as Code
+- CI/CD automation
+- Secure cloud authentication
+
+---
+
+## 📄 License
+
+MIT License
