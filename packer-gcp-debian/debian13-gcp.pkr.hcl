@@ -60,4 +60,11 @@ build {
       "--ssh-extra-args", "-o IdentitiesOnly=yes"
     ]
   }
+  provisioner "ansible" {
+    playbook_file = "./ansible/prepare-k3s.yml"
+    user          = "packer"
+    extra_arguments = [
+      "--ssh-extra-args", "-o IdentitiesOnly=yes"
+    ]
+  }
 }

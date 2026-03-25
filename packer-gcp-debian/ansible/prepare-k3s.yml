@@ -1,0 +1,137 @@
+---
+- name: Prepare Debian 13 for k3s workloads
+  hosts: all
+  become: true
+
+  vars:
+    helm_version: "v3.18.6"
+    helm_arch_map:
+      x86_64: amd64
+      aarch64: arm64
+
+    k3s_prereq_packages:
+      - apparmor
+      - apparmor-utils
+      - open-iscsi
+      - nfs-common
+      - iptables
+      - arptables
+      - ebtables
+      - jq
+
+  tasks:
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Install k3s prerequisite packages
+      ansible.builtin.apt:
+        name: "{{ k3s_prereq_packages }}"
+        state: present
+
+    - name: Enable and start AppArmor
+      ansible.builtin.systemd:
+        name: apparmor
+        enabled: true
+        state: started
+
+    - name: Enable and start open-iscsi
+      ansible.builtin.systemd:
+        name: open-iscsi
+        enabled: true
+        state: started
+
+    - name: Enable and start iscsid
+      ansible.builtin.systemd:
+        name: iscsid
+        enabled: true
+        state: started
+
+    - name: Check available iptables alternative
+      ansible.builtin.command: update-alternatives --query iptables
+      register: iptables_alt
+      changed_when: false
+
+    - name: Set iptables to legacy backend
+      ansible.builtin.command: update-alternatives --set iptables /usr/sbin/iptables-legacy
+      when: "'/usr/sbin/iptables-legacy' in iptables_alt.stdout"
+
+    - name: Check available ip6tables alternative
+      ansible.builtin.command: update-alternatives --query ip6tables
+      register: ip6tables_alt
+      changed_when: false
+
+    - name: Set ip6tables to legacy backend
+      ansible.builtin.command: update-alternatives --set ip6tables /usr/sbin/ip6tables-legacy
+      when: "'/usr/sbin/ip6tables-legacy' in ip6tables_alt.stdout"
+
+    - name: Check available arptables alternative
+      ansible.builtin.command: update-alternatives --query arptables
+      register: arptables_alt
+      changed_when: false
+      failed_when: false
+
+    - name: Set arptables to legacy backend
+      ansible.builtin.command: update-alternatives --set arptables /usr/sbin/arptables-legacy
+      when:
+        - arptables_alt.rc == 0
+        - "'/usr/sbin/arptables-legacy' in arptables_alt.stdout"
+
+    - name: Check available ebtables alternative
+      ansible.builtin.command: update-alternatives --query ebtables
+      register: ebtables_alt
+      changed_when: false
+      failed_when: false
+
+    - name: Set ebtables to legacy backend
+      ansible.builtin.command: update-alternatives --set ebtables /usr/sbin/ebtables-legacy
+      when:
+        - ebtables_alt.rc == 0
+        - "'/usr/sbin/ebtables-legacy' in ebtables_alt.stdout"
+
+    - name: Determine helm architecture
+      ansible.builtin.set_fact:
+        helm_arch: "{{ helm_arch_map[ansible_architecture] | default('amd64') }}"
+
+    - name: Download Helm archive
+      ansible.builtin.get_url:
+        url: "https://get.helm.sh/helm-{{ helm_version }}-linux-{{ helm_arch }}.tar.gz"
+        dest: "/tmp/helm-{{ helm_version }}-linux-{{ helm_arch }}.tar.gz"
+        mode: "0644"
+
+    - name: Create temporary Helm extraction directory
+      ansible.builtin.file:
+        path: "/tmp/helm-extract"
+        state: directory
+        mode: "0755"
+
+    - name: Extract Helm archive
+      ansible.builtin.unarchive:
+        src: "/tmp/helm-{{ helm_version }}-linux-{{ helm_arch }}.tar.gz"
+        dest: "/tmp/helm-extract"
+        remote_src: true
+
+    - name: Install Helm binary
+      ansible.builtin.copy:
+        src: "/tmp/helm-extract/linux-{{ helm_arch }}/helm"
+        dest: "/usr/local/bin/helm"
+        remote_src: true
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Verify Helm installation
+      ansible.builtin.command: helm version --short
+      register: helm_version_output
+      changed_when: false
+
+    - name: Clean up Helm archive
+      ansible.builtin.file:
+        path: "/tmp/helm-{{ helm_version }}-linux-{{ helm_arch }}.tar.gz"
+        state: absent
+
+    - name: Clean up Helm extraction directory
+      ansible.builtin.file:
+        path: "/tmp/helm-extract"
+        state: absent
