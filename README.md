@@ -5,6 +5,8 @@
 
 End-to-end automation for building and deploying a production-style k3s cluster.
 
+For now GCP
+
 ## Overview
 
 This project demonstrates a practical DevOps / Platform Engineering workflow:
