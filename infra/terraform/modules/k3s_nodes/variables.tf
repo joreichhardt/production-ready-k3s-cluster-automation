@@ -10,10 +10,6 @@ variable "image_name" {
   type = string
 }
 
-variable "image_project" {
-  type = string
-}
-
 variable "machine_type" {
   type    = string
   default = "e2-custom-2-4096"
