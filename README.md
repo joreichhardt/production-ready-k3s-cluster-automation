@@ -1,5 +1,11 @@
 ## 🚧 Current State of the Project
 
+#prerequisites
+
+* terraform-sa Service Account (Editor+Storage Admin)
+* Enable API
+* Enable OS-Login
+
 The project is currently in an early but functional stage with a working Terraform-based infrastructure setup on Google Cloud Platform.
 
 ### ✅ Implemented
