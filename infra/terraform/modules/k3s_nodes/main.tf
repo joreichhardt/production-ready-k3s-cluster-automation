@@ -33,12 +33,12 @@ resource "google_compute_instance" "nodes" {
     network_ip = each.value
   }
 
-  service_account {
-    scopes = ["https://www.googleapis.com/auth/cloud-platform"]
-  }
-
   metadata = {
     enable-oslogin = "TRUE"
+  }
+
+  service_account {
+    scopes = ["https://www.googleapis.com/auth/cloud-platform"]
   }
 
   scheduling {

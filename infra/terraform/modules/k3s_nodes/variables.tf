@@ -1,51 +1,35 @@
-locals {
-  nodes = {
-    k3s-01 = "10.0.0.11"
-    k3s-02 = "10.0.0.12"
-    k3s-03 = "10.0.0.13"
-  }
+variable "zone" {
+  type = string
 }
 
-data "google_compute_image" "golden" {
-  name    = var.image_name
-  project = var.image_project
+variable "subnetwork_self_link" {
+  type = string
 }
 
-resource "google_compute_instance" "nodes" {
-  for_each     = local.nodes
-  name         = each.key
-  machine_type = var.machine_type
-  zone         = var.zone
-  tags         = var.tags
+variable "image_name" {
+  type = string
+}
 
-  boot_disk {
-    auto_delete = true
+variable "image_project" {
+  type = string
+}
 
-    initialize_params {
-      image = data.google_compute_image.golden.self_link
-      size  = var.disk_size_gb
-      type  = var.disk_type
-    }
-  }
+variable "machine_type" {
+  type    = string
+  default = "e2-custom-2-4096"
+}
 
-  network_interface {
-    subnetwork = var.subnetwork_self_link
-    network_ip = each.value
-  }
+variable "disk_size_gb" {
+  type    = number
+  default = 20
+}
 
-  service_account {
-    scopes = ["https://www.googleapis.com/auth/cloud-platform"]
-  }
+variable "disk_type" {
+  type    = string
+  default = "pd-balanced"
+}
 
-  scheduling {
-    automatic_restart   = true
-    on_host_maintenance = "MIGRATE"
-    preemptible         = false
-  }
-
-  shielded_instance_config {
-    enable_secure_boot          = false
-    enable_vtpm                 = true
-    enable_integrity_monitoring = true
-  }
+variable "tags" {
+  type    = list(string)
+  default = ["k3s"]
 }
