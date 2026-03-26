@@ -22,7 +22,7 @@ variable "ssh_user" {
 
 variable "image_name" {
   type    = string
-  default = "debian13-golden-v1"
+  default = "projects/project-84ddd43d-e408-4cb9-8cb/global/images/debian13-golden-v1"
 }
 
 variable "vpc_name" {
