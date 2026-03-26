@@ -16,7 +16,6 @@ module "k3s_nodes" {
   image_name           = var.image_name
   image_project        = var.image_project
 
-  ssh_user             = var.ssh_user
 
   machine_type         = var.machine_type
   disk_size_gb         = var.disk_size_gb
