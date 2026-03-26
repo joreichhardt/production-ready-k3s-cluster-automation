@@ -27,6 +27,19 @@ The goal is to build a fully automated k3s cluster deployment pipeline.
 
 ---
 
+## 📦 Packer
+
+This project uses Packer to build reusable golden images.
+
+Purpose:
+- Preconfigure base system (Debian 13)
+- Apply system hardening (Ansible)
+- Prepare nodes for k3s installation
+
+This reduces provisioning time and ensures reproducibility across environments.
+
+---
+
 ## 🏗️ Architecture
 
 Current state:
