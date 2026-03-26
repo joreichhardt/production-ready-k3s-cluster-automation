@@ -14,8 +14,6 @@ module "k3s_nodes" {
   subnetwork_self_link = module.network.subnetwork_self_link
 
   image_name           = var.image_name
-  image_project        = var.image_project
-
 
   machine_type         = var.machine_type
   disk_size_gb         = var.disk_size_gb
