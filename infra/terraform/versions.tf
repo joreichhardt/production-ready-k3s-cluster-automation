@@ -2,7 +2,7 @@ terraform {
   required_version = ">= 1.5.0"
 
   backend "gcs" {
-    bucket = "terraform-state-bucket"
+    bucket = "project-84ddd43d-e408-4cb9-8cb-k3s-tf-state"
     prefix = "k3s-cluster"
   }
 
