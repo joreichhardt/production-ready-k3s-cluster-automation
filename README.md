@@ -87,7 +87,7 @@ This avoids long-lived credentials and follows modern cloud security best practi
     .github/
       workflows/          # GitHub Actions pipeline
 
-    QUICK PLAN OVERVIEW
+    QUICK PLANNED STRUCTURE OVERVIEW
 
     .
     ├── ci
