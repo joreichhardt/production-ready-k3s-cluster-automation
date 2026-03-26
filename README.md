@@ -1,3 +1,5 @@
+🚧 This project is currently under active development.
+
 # Production-ready k3s Cluster Automation
 
 Automated Kubernetes (k3s) infrastructure provisioning on Google Cloud using Terraform and GitHub Actions with OIDC (keyless authentication).
