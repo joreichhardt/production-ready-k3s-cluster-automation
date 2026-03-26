@@ -39,3 +39,26 @@ variable "subnet_cidr" {
   type        = string
   default     = "10.0.0.0/24"
 }
+
+variable "image_project" {
+  type        = string
+  description = "GCP project where the custom image exists"
+}
+
+variable "machine_type" {
+  type        = string
+  description = "Machine type for k3s nodes"
+  default     = "e2-custom-2-4096"
+}
+
+variable "disk_size_gb" {
+  type        = number
+  description = "Boot disk size in GB"
+  default     = 20
+}
+
+variable "disk_type" {
+  type        = string
+  description = "Boot disk type"
+  default     = "pd-balanced"
+}
