@@ -87,28 +87,28 @@ This avoids long-lived credentials and follows modern cloud security best practi
     .github/
       workflows/          # GitHub Actions pipeline
 
-.
-├── ci
-├── infra
-│   └── terraform
-│       ├── main.tf
-│       ├── modules
-│       │   ├── network
-│       │   └── vm
-│       ├── outputs.tf
-│       ├── providers.tf
-│       ├── terraform.tfvars
-│       ├── variables.tf
-│       └── versions.tf
-├── k3s
-├── LICENSE
-├── monitoring
-├── packer-gcp-debian
-│   ├── ansible
-│   │   ├── golden-image.yml
-│   │   └── prepare-k3s.yml
-│   └── debian13-gcp.pkr.hcl
-└── README.md
+    .
+    ├── ci
+    ├── infra
+    │   └── terraform
+    │       ├── main.tf
+    │       ├── modules
+    │       │   ├── network
+    │       │   └── vm
+    │       ├── outputs.tf
+    │       ├── providers.tf
+    │       ├── terraform.tfvars
+    │       ├── variables.tf
+    │       └── versions.tf
+    ├── k3s
+    ├── LICENSE
+    ├── monitoring
+    ├── packer-gcp-debian
+    │   ├── ansible
+    │   │   ├── golden-image.yml
+    │   │   └── prepare-k3s.yml
+    │   └── debian13-gcp.pkr.hcl
+    └── README.md
 
 ---
 
