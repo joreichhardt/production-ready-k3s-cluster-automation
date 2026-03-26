@@ -40,11 +40,6 @@ variable "subnet_cidr" {
   default     = "10.0.0.0/24"
 }
 
-variable "image_project" {
-  type        = string
-  description = "GCP project where the custom image exists"
-}
-
 variable "machine_type" {
   type        = string
   description = "Machine type for k3s nodes"
