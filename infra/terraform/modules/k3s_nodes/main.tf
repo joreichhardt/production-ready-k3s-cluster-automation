@@ -8,7 +8,6 @@ locals {
 
 data "google_compute_image" "golden" {
   name    = var.image_name
-  project = var.image_project
 }
 
 resource "google_compute_instance" "nodes" {
