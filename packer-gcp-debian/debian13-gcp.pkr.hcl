@@ -39,7 +39,7 @@ source "googlecompute" "debian13" {
 
   ssh_username            = "packer"
 
-  image_name              = "debian-13-golden-{{timestamp}}"
+  image_name              = "debian13-golden-v1"
   image_family            = var.image_family
   image_description       = "Debian 13 golden image built with Packer and Ansible"
 

@@ -1,6 +1,5 @@
 variable "region" {
-  type    = string
-  default = "europe-west3"
+  type = string
 }
 
 variable "vpc_name" {
