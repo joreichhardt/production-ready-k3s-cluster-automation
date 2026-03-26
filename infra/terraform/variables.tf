@@ -1,19 +1,36 @@
+variable "project_id" {
+  type        = string
+  description = "GCP Project ID"
+}
+
 variable "region" {
-  type    = string
-  default = "europe-west3"
+  type        = string
+  description = "GCP Region"
+  default     = "europe-west3"
 }
 
-variable "vpc_name" {
-  type    = string
-  default = "k3s-vpc"
+variable "zone" {
+  type        = string
+  description = "GCP Zone"
+  default     = "europe-west3-b"
 }
 
-variable "subnet_name" {
+variable "ssh_user" {
   type    = string
-  default = "k3s-subnet"
+  default = "jre"
 }
 
-variable "subnet_cidr" {
+variable "ssh_public_key" {
+  type        = string
+  description = "SSH Public Key"
+}
+
+variable "image_name" {
   type    = string
-  default = "10.0.0.0/24"
+  default = "debian13-golden-v1"
+}
+
+variable "image_project" {
+  type        = string
+  description = "Project where image lives"
 }
