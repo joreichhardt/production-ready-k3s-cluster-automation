@@ -1,0 +1,47 @@
+name: Deploy k3s
+
+on:
+  workflow_dispatch:
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: infra/terraform
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+
+  ansible:
+    runs-on: ubuntu-latest
+    needs: terraform
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Ansible deps
+        run: |
+          pip install ansible google-auth requests
+          ansible-galaxy collection install google.cloud
+
+      - name: Run Ansible
+        working-directory: ansible
+        run: |
+          ansible-inventory -i inventory/gcp.yml --graph
+          ansible-playbook -i inventory/gcp.yml playbooks/base.yml
