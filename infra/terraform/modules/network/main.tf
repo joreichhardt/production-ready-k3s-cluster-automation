@@ -4,7 +4,7 @@ resource "google_compute_network" "vpc" {
 }
 
 resource "google_compute_subnetwork" "subnet" {
-  name          = var.subnet_name
+  name          = "${var.vpc_name}-subnet"
   ip_cidr_range = var.subnet_cidr
   region        = var.region
   network       = google_compute_network.vpc.id
@@ -35,6 +35,19 @@ resource "google_compute_firewall" "allow_internal" {
   }
 
   source_ranges = [var.subnet_cidr]
+  target_tags   = ["k3s"]
+}
+
+resource "google_compute_firewall" "allow_iap_ssh" {
+  name    = "${var.vpc_name}-allow-iap-ssh"
+  network = google_compute_network.vpc.name
+
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]
+  }
+
+  source_ranges = ["35.235.240.0/20"]
   target_tags   = ["k3s"]
 }
 
