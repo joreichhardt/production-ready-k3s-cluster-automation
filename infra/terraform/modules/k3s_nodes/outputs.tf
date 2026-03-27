@@ -14,10 +14,10 @@ output "private_ips" {
 
 output "nodes" {
   value = [
-    for idx, node in google_compute_instance.nodes : {
+    for node in google_compute_instance.nodes : {
       name       = node.name
       private_ip = node.network_interface[0].network_ip
-      role       = idx == 0 ? "init" : "join"
+      role       = node.name == "k3s-01" ? "init" : "join"
     }
   ]
 }
