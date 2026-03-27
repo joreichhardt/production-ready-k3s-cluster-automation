@@ -1,0 +1,16 @@
+---
+- name: Get token from init node
+  set_fact:
+    k3s_token: "{{ hostvars[groups['k3s_server_init'][0]].k3s_token }}"
+
+- name: Get init node IP
+  set_fact:
+    k3s_server_ip: "{{ hostvars[groups['k3s_server_init'][0]].ansible_host }}"
+
+- name: Install k3s joining server
+  shell: |
+    curl -sfL https://get.k3s.io | sh -s - server \
+      --server https://{{ k3s_server_ip }}:6443 \
+      --token {{ k3s_token }}
+  args:
+    creates: /etc/rancher/k3s/k3s.yaml

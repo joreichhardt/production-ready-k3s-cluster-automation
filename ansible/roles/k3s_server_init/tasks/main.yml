@@ -1,0 +1,15 @@
+---
+- name: Install k3s init server
+  shell: |
+    curl -sfL https://get.k3s.io | sh -s - server --cluster-init
+  args:
+    creates: /etc/rancher/k3s/k3s.yaml
+
+- name: Read k3s node token
+  slurp:
+    src: /var/lib/rancher/k3s/server/node-token
+  register: k3s_token_raw
+
+- name: Set k3s token fact
+  set_fact:
+    k3s_token: "{{ k3s_token_raw.content | b64decode | trim }}"
