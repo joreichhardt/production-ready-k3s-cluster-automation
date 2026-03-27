@@ -5,3 +5,6 @@
 .terraform.lock.hcl
 crash.log
 terraform.tfvars
+# Python virtual env
+.venv/
+venv/
