@@ -13,7 +13,7 @@ hostnames:
   - name
 
 compose:
-  ansible_host: networkInterfaces[0].networkIP
+  ansible_host: name
   ansible_user: "'johannes_reichhardt_gmail_com'"
 
 groups:

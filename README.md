@@ -1,4 +1,5 @@
 ## 🚧 Current State of the Project
+* RUNNER MISSING
 
 #prerequisites
 
