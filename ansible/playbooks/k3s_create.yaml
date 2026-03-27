@@ -1,0 +1,17 @@
+- name: Bootstrap k3s cluster
+  hosts: k3s_servers
+  become: true
+  roles:
+    - common
+
+- name: Init first server
+  hosts: k3s_server_init
+  become: true
+  roles:
+    - k3s_server_init
+
+- name: Join other servers
+  hosts: k3s_server_join
+  become: true
+  roles:
+    - k3s_server_join

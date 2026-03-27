@@ -1,0 +1,22 @@
+plugin: google.cloud.gcp_compute
+
+projects:
+  - project-84ddd43d-e408-4cb9-8cb
+
+auth_kind: application
+
+filters:
+  - status = RUNNING
+  - name = k3s-01 OR name = k3s-02 OR name = k3s-03
+
+hostnames:
+  - name
+
+compose:
+  ansible_host: networkInterfaces[0].networkIP
+  ansible_user: "'johannes_reichhardt_gmail_com'"
+
+groups:
+  k3s_server_init: name == 'k3s-01'
+  k3s_server_join: name in ['k3s-02', 'k3s-03']
+  k3s_servers: name in ['k3s-01', 'k3s-02', 'k3s-03']

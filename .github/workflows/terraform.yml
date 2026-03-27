@@ -41,3 +41,14 @@ jobs:
       - name: Terraform Apply
         if: github.ref == 'refs/heads/master'
         run: terraform apply -auto-approve -input=false
+      #json for ansible
+      - name: Export k3s nodes JSON
+        run: |
+          terraform output -json | jq '.k3s_nodes.value' > k3s_nodes.json
+          cat k3s_nodes.json
+      #upload 
+      - name: Upload k3s_nodes.json
+        uses: actions/upload-artifact@v4
+        with:
+          name: k3s_nodes
+          path: infra/terraform/k3s_nodes.json
